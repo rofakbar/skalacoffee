@@ -7,17 +7,20 @@
 @theme {
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 
-  --color-latar: #faf8f5; /* Cream background */
-  --color-permukaan: #ffffff; /* White cards */
-  --color-garis: #e8e4dc;
-  --color-teks: #2b2725; /* Dark charcoal */
-  --color-teks-lembut: #706a65;
+  --color-latar: #f9f5f0;        /* Warm cream background */
+  --color-permukaan: #ffffff;     /* White cards/panels */
+  --color-garis: #ebe5dd;        /* Warm gray borders */
+  --color-teks: #2d2320;         /* Dark espresso text */
+  --color-teks-lembut: #8b7e74;  /* Muted text */
 
-  --color-utama: #4a362a; /* Espresso brown */
-  --color-utama-gelap: #32231b;
+  --color-utama: #3c2415;        /* Espresso brown primary */
+  --color-utama-gelap: #2a180e;  /* Darker brown */
 
-  --color-harga: #4a362a;
-  --color-harga-latar: #f2ede9;
+  --color-aksen: #f4a261;        /* Soft orange accent */
+  --color-aksen-lembut: #fef0e0; /* Light orange bg */
+
+  --color-harga: #3c2415;
+  --color-harga-latar: #fef0e0;
 
   --color-bahaya: #b42318;
 }
@@ -28,6 +31,18 @@ html {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-utama);
+  outline: 3px solid var(--color-aksen);
   outline-offset: 2px;
+}
+
+/* Custom scrollbar for dashboard */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--color-garis);
+  border-radius: 999px;
 }
