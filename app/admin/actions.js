@@ -49,7 +49,8 @@ export async function changePasswordAction(prevState, formData) {
 
   const supabase = await createSupabaseActionClient();
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data, error: userError } = await supabase.auth.getUser();
+  const user = data?.user;
 
   if (!user) {
     return { error: "Anda harus login untuk mengganti password.", success: false };
