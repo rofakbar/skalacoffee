@@ -31,3 +31,37 @@ export async function logoutAction() {
   redirect("/admin/login");
 }
 
+export async function changePasswordAction(prevState, formData) {
+  const passwordBaru = formData.get("password_baru");
+  const konfirmasiPassword = formData.get("konfirmasi_password");
+
+  if (!passwordBaru || !konfirmasiPassword) {
+    return { error: "Semua kolom wajib diisi.", success: false };
+  }
+
+  if (passwordBaru.length < 8) {
+    return { error: "Password minimal 8 karakter.", success: false };
+  }
+
+  if (passwordBaru !== konfirmasiPassword) {
+    return { error: "Password baru dan konfirmasi tidak sama.", success: false };
+  }
+
+  const supabase = await createSupabaseActionClient();
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Anda harus login untuk mengganti password.", success: false };
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: passwordBaru
+  });
+
+  if (error) {
+    return { error: error.message || "Gagal mengganti password.", success: false };
+  }
+
+  return { success: true, message: "Password berhasil diganti." };
+}
