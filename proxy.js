@@ -7,8 +7,8 @@ export async function middleware(request) {
   });
 
   const supabase = createServerClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_PUBLISHABLE_KEY,
+    process.env.SUPABASE_URL?.trim(),
+    process.env.SUPABASE_PUBLISHABLE_KEY?.trim(),
     {
       cookies: {
         getAll() {
