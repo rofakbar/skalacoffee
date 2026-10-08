@@ -1,25 +1,11 @@
 import { toko } from "@/lib/toko";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { createSupabaseActionClient } from "@/lib/supabase/ssr";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 import KatalogDinamis from "@/components/KatalogDinamis";
 import FloatingCart from "@/components/FloatingCart";
 
 export default async function HalamanKatalog() {
-  // 1. Panggil Supabase SSR client untuk membaca cookies (cek sesi login)
-  const supabaseAuth = await createSupabaseActionClient();
-  
-  // 2. Ambil data user saat ini dari cookies
-  const { data: { user } } = await supabaseAuth.auth.getUser();
-
-  // 3. Jika TIDAK ADA user (belum login), tendang langsung ke halaman login
-  if (!user) {
-    redirect("/admin/login");
-  }
-
-  // === JIKA SUDAH LOGIN, KODE DI BAWAH INI AKAN DIEKSEKUSI ===
-
-  // 4. Panggil Supabase Server client untuk mengambil data produk
+  // Hanya ambil data produk dari Supabase, TANPA ada pengecekan session login
   const supabase = createSupabaseServerClient();
   const { data: daftarProduk, error } = await supabase
     .from("produk")
@@ -28,20 +14,31 @@ export default async function HalamanKatalog() {
 
   return (
     <div className="relative min-h-screen">
+      
+      {/* Tombol Login Admin di pojok kanan atas */}
+      <div className="absolute top-6 right-6 md:top-8 md:right-8 z-50">
+        <Link 
+          href="/admin/login" 
+          className="text-sm font-medium px-5 py-2.5 rounded-full bg-white text-[#4A3628] border border-gray-200 shadow-sm hover:bg-gray-50 transition-all"
+        >
+          Admin Login
+        </Link>
+      </div>
+
       <section className="relative overflow-hidden py-16 sm:py-24 flex flex-col items-center justify-center text-center">
         {/* Subtle background decoration */}
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-utama/10 via-latar to-latar"></div>
         
         <h1 className="max-w-3xl text-5xl font-extrabold leading-[1.1] tracking-tight sm:text-7xl text-teks">
           Ruang Nyaman Untuk <br/> 
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-utama to-harga">
+          <span className="text-teks">
             Waktu Yang Lambat
           </span>
         </h1>
         <p className="mt-6 max-w-xl text-lg text-teks-lembut font-medium">
           {toko.nama} - {toko.tagline}
         </p>
-        <div className="mt-8 flex items-center justify-center gap-2 text-sm font-semibold text-utama bg-utama/5 px-4 py-2 rounded-full border border-utama/10">
+        <div className="mt-8 flex items-center justify-center gap-2 text-sm font-semibold text-teks bg-permukaan px-4 py-2 rounded-full border border-garis shadow-sm">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           {toko.jamBuka}
         </div>
