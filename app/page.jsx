@@ -1,9 +1,25 @@
 import { toko } from "@/lib/toko";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseActionClient } from "@/lib/supabase/ssr";
+import { redirect } from "next/navigation";
 import KatalogDinamis from "@/components/KatalogDinamis";
 import FloatingCart from "@/components/FloatingCart";
 
 export default async function HalamanKatalog() {
+  // 1. Panggil Supabase SSR client untuk membaca cookies (cek sesi login)
+  const supabaseAuth = await createSupabaseActionClient();
+  
+  // 2. Ambil data user saat ini dari cookies
+  const { data: { user } } = await supabaseAuth.auth.getUser();
+
+  // 3. Jika TIDAK ADA user (belum login), tendang langsung ke halaman login
+  if (!user) {
+    redirect("/admin/login");
+  }
+
+  // === JIKA SUDAH LOGIN, KODE DI BAWAH INI AKAN DIEKSEKUSI ===
+
+  // 4. Panggil Supabase Server client untuk mengambil data produk
   const supabase = createSupabaseServerClient();
   const { data: daftarProduk, error } = await supabase
     .from("produk")
