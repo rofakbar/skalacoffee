@@ -19,7 +19,7 @@ export default async function HalamanKatalog() {
       <div className="absolute top-6 right-6 md:top-8 md:right-8 z-50">
         <Link 
           href="/admin/login" 
-          className="text-sm font-medium px-5 py-2.5 rounded-full bg-white text-[#4A3628] border border-gray-200 shadow-sm hover:bg-gray-50 transition-all"
+          className="text-sm font-medium px-5 py-2.5 rounded-full bg-[#4A3628] text-white shadow-md hover:bg-[#36271c] transition-all"
         >
           Admin Login
         </Link>
